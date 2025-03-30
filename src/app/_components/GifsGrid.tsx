@@ -22,7 +22,6 @@ export default function GifsGrid() {
 
   function fetchNewGifs() {
     if (!gifsArray) return;
-
     dispatch(getGifsThunk(12 - countLockedGifs(gifsArray)));
   }
 
