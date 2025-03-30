@@ -10,7 +10,17 @@ export const getGifsThunk = createAsyncThunk(
       const resp = await axios.get(internalApiEndpoints.getGifs(quantity));
 
       console.log("Login thunk resp", resp.data);
-      return resp.data as GiphyGif[];
+      const gifs = resp.data as GiphyGif[];
+
+      const sortedAndKeyedGifs = [...gifs]
+        .sort(
+          (a, b) => new Date(b.import_datetime).getTime() - new Date(a.import_datetime).getTime()
+        )
+        .map((gif, index) => ({
+          ...gif,
+          uniqueKey: `${gif.id}_${index}`,
+        }));
+      return sortedAndKeyedGifs;
     } catch (error) {
       console.log("Error form Login thunk", error);
       //   const message =

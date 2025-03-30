@@ -15,7 +15,7 @@ export default function GifCard({ gifData, handleGifLock }: GifCardProps) {
     <div className="w-[23rem]">
       <div
         onClick={() => handleGifLock(gifData.uniqueKey)}
-        className="bg-white w-[23rem] h-[16.5rem] relative rounded-[0.6rem] border-[2px] border-white shadow-[0_2px_4px_rgba(0,0,0,0.1)] "
+        className="bg-white w-[23rem] h-[16.5rem] relative rounded-[0.6rem] border-[2px] border-white shadow-[0_2px_4px_rgba(0,0,0,0.1)] cursor-pointer"
       >
         <Image
           src={gifData.images.downsized.url ?? null}
