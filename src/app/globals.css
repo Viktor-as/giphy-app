@@ -1,27 +1,31 @@
 @import "tailwindcss";
 
+/* Set base font-size: 1rem = 10px */
+html {
+  font-size: 62.5%;
+}
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #171923;
+  --foreground: #ffffff;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-blueBtnBg: #2d3748;
 
   --font-inter: var(--font-inter);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 @layer utilities {
   .content {
-    @apply mx-auto max-w-[1016px];
+    @apply mx-auto max-w-[1048px] p-[1.6rem];
+  }
+  .center {
+    @apply flex justify-center items-center;
+  }
+  .center-col {
+    @apply flex flex-col justify-center items-center;
   }
 }
 
@@ -29,4 +33,12 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-inter), sans-serif;
+  font-size: 1.6rem;
+  line-height: 150%;
+}
+
+h1 {
+  font-size: 3.6rem;
+  font-weight: 700;
+  line-height: 120%;
 }

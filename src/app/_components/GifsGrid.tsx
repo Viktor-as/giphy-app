@@ -4,32 +4,37 @@ import { selectGifs } from "@/store/giphy/giphySlice";
 import { getGifsThunk } from "@/store/giphy/giphyThunk";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import { useEffect } from "react";
-import Image from "next/image";
+import GifCard from "./GifCard";
+import RefreshBtn from "./RefreshBtn";
 
 export default function GifsGrid() {
   const dispatch = useAppDispatch();
-  const { isLoading, isSuccess, isError, message, data: gifsData } = useAppSelector(selectGifs);
-  console.log("gifsData", gifsData);
+  const { isLoading, isSuccess, isError, message, data: gifsArray } = useAppSelector(selectGifs);
+  console.log("gifsArray", gifsArray);
   // useEffects -----------------------------------
   useEffect(() => {
-    dispatch(getGifsThunk(5));
+    dispatch(getGifsThunk(12));
   }, []);
 
-  if (!gifsData) {
+  if (!gifsArray) {
     return <div>Loading...</div>;
   }
   return (
-    <div>
-      {gifsData.map((gif) => (
-        <Image
-          src={gif.images.downsized.url}
-          alt={gif.title || "Giphy GIF"}
-          width={Number(gif.images.downsized.width)}
-          height={Number(gif.images.downsized.height)}
-          className="rounded-xl shadow-lg"
-          key={gif.id}
+    <div className="flex flex-col w-full ">
+      <div className="grid [grid-template-columns:repeat(auto-fit,23rem)] justify-center gap-[2.4rem] py-[2.4rem] px-[1.2rem] w-full">
+        {gifsArray.map((gifData) => (
+          <GifCard key={gifData.id} gifData={gifData} isLocked />
+        ))}
+      </div>
+      <div className="flex justify-center mt-[3.2rem] mb-[1.6rem]">
+        <RefreshBtn
+          text="Hit here to refresh gifs or press space"
+          isLoading={false}
+          onClick={() => {
+            console.log("btn clicked");
+          }}
         />
-      ))}
+      </div>
     </div>
   );
 }
