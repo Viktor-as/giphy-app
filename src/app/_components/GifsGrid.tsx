@@ -1,34 +1,39 @@
 "use client";
 
-import { selectGifs } from "@/store/giphy/giphySlice";
+import { selectGifs, selectGifsStates } from "@/store/giphy/giphySlice";
 import { getGifsThunk } from "@/store/giphy/giphyThunk";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import { useEffect } from "react";
 import GifCard from "./GifCard";
 import RefreshBtn from "./RefreshBtn";
 import { toggleGifLock } from "@/store/giphy/giphySlice";
+import { countLockedGifs } from "../_helpers/countLockedGifs";
 
 export default function GifsGrid() {
   const dispatch = useAppDispatch();
-  const { isLoading, isSuccess, isError, message, data: gifsArray } = useAppSelector(selectGifs);
+  const { isLoading, isSuccess, isError, message } = useAppSelector(selectGifsStates);
+  const gifsArray = useAppSelector(selectGifs);
   console.log("gifsArray", gifsArray);
 
   // Handlers -----------------------------------
-  function handleGifLock(gifId: string) {
-    dispatch(toggleGifLock(gifId));
+  function handleGifLock(uniqueKey: string) {
+    dispatch(toggleGifLock(uniqueKey));
   }
 
   function fetchNewGifs() {
     if (!gifsArray) return;
-    const lockedCount = gifsArray.reduce((count, gif) => {
-      return gif.isLocked === true ? count + 1 : count;
-    }, 0);
-    dispatch(getGifsThunk(12 - lockedCount));
+
+    dispatch(getGifsThunk(12 - countLockedGifs(gifsArray)));
   }
 
   // useEffects -----------------------------------
   useEffect(() => {
-    dispatch(getGifsThunk(12));
+    console.log("gifsArray at initial useEffect", gifsArray);
+    if (!gifsArray || gifsArray.length === 0) {
+      dispatch(getGifsThunk(12));
+    } else {
+      dispatch(getGifsThunk(12 - countLockedGifs(gifsArray)));
+    }
   }, []);
 
   // Add Spacebar listener
@@ -53,7 +58,7 @@ export default function GifsGrid() {
       <div className="grid [grid-template-columns:repeat(auto-fit,23rem)] justify-center gap-[2.4rem] py-[2.4rem] px-[1.2rem] w-full">
         {gifsArray.map((gifData) => (
           <GifCard
-            key={`${gifData.id}-${Date.now()}`}
+            key={`${gifData.uniqueKey}-${Date.now()}`}
             gifData={gifData}
             handleGifLock={handleGifLock}
           />

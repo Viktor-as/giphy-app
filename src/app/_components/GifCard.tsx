@@ -7,18 +7,18 @@ import LockedLockIcon from "@/media/icons/LockedLock.svg";
 
 interface GifCardProps {
   gifData: GiphyGif;
-  handleGifLock: (gifId: string) => void;
+  handleGifLock: (uniqueKey: string) => void;
 }
 
 export default function GifCard({ gifData, handleGifLock }: GifCardProps) {
   return (
     <div className="w-[23rem]">
       <div
-        onClick={() => handleGifLock(gifData.id)}
+        onClick={() => handleGifLock(gifData.uniqueKey)}
         className="bg-white w-[23rem] h-[16.5rem] relative rounded-[0.6rem] border-[2px] border-white shadow-[0_2px_4px_rgba(0,0,0,0.1)] "
       >
         <Image
-          src={gifData.images.downsized.url}
+          src={gifData.images.downsized.url ?? null}
           alt={gifData.alt_text || gifData.title || "Giphy GIF"}
           className="rounded-[0.6rem]"
           key={gifData.id}

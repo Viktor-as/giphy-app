@@ -4,13 +4,13 @@ import { getGifsThunk } from "./giphyThunk";
 import { GiphyState, GiphyGif } from "./giphyTypes";
 
 const initialState: GiphyState = {
-  gifs: {
+  gifsStates: {
     isLoading: false,
     isError: false,
     message: null,
     isSuccess: false,
-    data: null,
   },
+  gifsArray: null,
 };
 
 export const giphySlice = createSlice({
@@ -18,8 +18,8 @@ export const giphySlice = createSlice({
   initialState,
   reducers: {
     toggleGifLock: (state, action: PayloadAction<string>) => {
-      const gifId = action.payload;
-      const gif = state.gifs.data?.find((gif) => gif.id === gifId);
+      const uniqueKey = action.payload;
+      const gif = state.gifsArray?.find((gif) => gif.uniqueKey === uniqueKey);
       if (gif) {
         gif.isLocked = !gif.isLocked;
       }
@@ -28,28 +28,31 @@ export const giphySlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getGifsThunk.pending, (state) => {
-        state.gifs.isLoading = true;
-        state.gifs.isError = false;
-        state.gifs.isSuccess = false;
-        state.gifs.message = null;
+        state.gifsStates.isLoading = true;
+        state.gifsStates.isError = false;
+        state.gifsStates.isSuccess = false;
+        state.gifsStates.message = null;
       })
       .addCase(getGifsThunk.fulfilled, (state, action: PayloadAction<GiphyGif[]>) => {
-        state.gifs.isLoading = false;
-        state.gifs.isSuccess = true;
+        state.gifsStates.isLoading = false;
+        state.gifsStates.isSuccess = true;
 
         // Merge new gifs with existing gifs
-        const existingGifs = state.gifs.data || [];
-        const newGifs = action.payload;
+        const existingGifs = state.gifsArray || [];
+        const newGifs = action.payload.map((gif, index) => ({
+          ...gif,
+          uniqueKey: `${gif.id}_${index}`,
+        }));
 
         // If no existing gifs, set the new gifs as the data
         if (existingGifs.length === 0) {
-          state.gifs.data = action.payload;
+          state.gifsArray = action.payload;
           return;
         }
 
         let newGifIndex = 0;
 
-        state.gifs.data = existingGifs.map((gif) => {
+        state.gifsArray = existingGifs.map((gif) => {
           if (gif.isLocked) {
             return gif;
           } else {
@@ -60,9 +63,9 @@ export const giphySlice = createSlice({
         });
       })
       .addCase(getGifsThunk.rejected, (state, action) => {
-        state.gifs.isLoading = false;
-        state.gifs.isError = true;
-        state.gifs.message =
+        state.gifsStates.isLoading = false;
+        state.gifsStates.isError = true;
+        state.gifsStates.message =
           typeof action.payload === "string" ? action.payload : "An error occurred";
       });
   },
@@ -71,6 +74,7 @@ export const giphySlice = createSlice({
 export const { toggleGifLock } = giphySlice.actions;
 
 // Selectors --------------------------------
-export const selectGifs = (state: RootState) => state.giphy.gifs;
+export const selectGifsStates = (state: RootState) => state.giphy.gifsStates;
+export const selectGifs = (state: RootState) => state.giphy.gifsArray;
 
 export default giphySlice.reducer;
