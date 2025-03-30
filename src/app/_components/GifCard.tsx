@@ -4,6 +4,7 @@ import Image from "next/image";
 import { formatDateDashes } from "../_helpers/formatDateDashes";
 import LockIcon from "@/media/icons/MdOutlineLockOpen.svg";
 import LockedLockIcon from "@/media/icons/LockedLock.svg";
+import GifCardSkeleton from "./GifCardSkeleton";
 
 interface GifCardProps {
   gifData: GiphyGif;
@@ -11,6 +12,10 @@ interface GifCardProps {
 }
 
 export default function GifCard({ gifData, handleGifLock }: GifCardProps) {
+  if (gifData.isLoading) {
+    return <GifCardSkeleton />;
+  }
+
   return (
     <div className="w-[23rem]">
       <div

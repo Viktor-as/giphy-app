@@ -24,4 +24,5 @@ export interface GiphyGif {
     };
   };
   isLocked?: boolean;
+  isLoading?: boolean;
 }
