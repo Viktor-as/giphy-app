@@ -26,6 +26,9 @@ export async function GET(request: NextRequest) {
 
     return Response.json(gifs);
   } catch (error) {
-    return Response.json({ error: "Something went wrong" }, { status: 500 });
+    return Response.json(
+      { error: "Something went wrong, the app might have reached free Giphy limit" },
+      { status: 500 }
+    );
   }
 }

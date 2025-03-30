@@ -36,7 +36,28 @@ export const giphySlice = createSlice({
       .addCase(getGifsThunk.fulfilled, (state, action: PayloadAction<GiphyGif[]>) => {
         state.gifs.isLoading = false;
         state.gifs.isSuccess = true;
-        state.gifs.data = action.payload;
+
+        // Merge new gifs with existing gifs
+        const existingGifs = state.gifs.data || [];
+        const newGifs = action.payload;
+
+        // If no existing gifs, set the new gifs as the data
+        if (existingGifs.length === 0) {
+          state.gifs.data = action.payload;
+          return;
+        }
+
+        let newGifIndex = 0;
+
+        state.gifs.data = existingGifs.map((gif) => {
+          if (gif.isLocked) {
+            return gif;
+          } else {
+            const newGif = newGifs[newGifIndex] || gif; // fallback if newGifs runs out
+            newGifIndex++;
+            return newGif;
+          }
+        });
       })
       .addCase(getGifsThunk.rejected, (state, action) => {
         state.gifs.isLoading = false;
