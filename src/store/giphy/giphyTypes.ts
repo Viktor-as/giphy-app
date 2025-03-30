@@ -22,4 +22,5 @@ export interface GiphyGif {
       size: string;
     };
   };
+  isLocked?: boolean;
 }

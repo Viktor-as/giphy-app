@@ -7,13 +7,16 @@ import LockedLockIcon from "@/media/icons/LockedLock.svg";
 
 interface GifCardProps {
   gifData: GiphyGif;
-  isLocked?: boolean;
+  handleGifLock: (gifId: string) => void;
 }
 
-export default function GifCard({ gifData, isLocked }: GifCardProps) {
+export default function GifCard({ gifData, handleGifLock }: GifCardProps) {
   return (
     <div className="w-[23rem]">
-      <div className="bg-white w-[23rem] h-[16.5rem] relative rounded-[0.6rem] border-[2px] border-white shadow-[0_2px_4px_rgba(0,0,0,0.1)] ">
+      <div
+        onClick={() => handleGifLock(gifData.id)}
+        className="bg-white w-[23rem] h-[16.5rem] relative rounded-[0.6rem] border-[2px] border-white shadow-[0_2px_4px_rgba(0,0,0,0.1)] "
+      >
         <Image
           src={gifData.images.downsized.url}
           alt={gifData.alt_text || gifData.title || "Giphy GIF"}
@@ -24,8 +27,8 @@ export default function GifCard({ gifData, isLocked }: GifCardProps) {
           fill={true}
           style={{ objectFit: "cover", objectPosition: "center" }}
         />
-        {isLocked ? (
-          <div className="center w-[2.6rem] h-[2.6rem] bg-black/48 hover:bg-black/100 transition duration-300 absolute top-[10px] right-[10px] rounded-[0.4rem]">
+        {gifData.isLocked ? (
+          <div className="center w-[2.6rem] h-[2.6rem] bg-black absolute top-[10px] right-[10px] rounded-[0.4rem]">
             <LockedLockIcon className="w-[1.2rem]" />
           </div>
         ) : (
