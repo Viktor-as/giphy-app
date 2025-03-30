@@ -16,7 +16,15 @@ const initialState: GiphyState = {
 export const giphySlice = createSlice({
   name: "giphy",
   initialState,
-  reducers: {},
+  reducers: {
+    toggleGifLock: (state, action: PayloadAction<string>) => {
+      const gifId = action.payload;
+      const gif = state.gifs.data?.find((gif) => gif.id === gifId);
+      if (gif) {
+        gif.isLocked = !gif.isLocked;
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getGifsThunk.pending, (state) => {
@@ -39,7 +47,7 @@ export const giphySlice = createSlice({
   },
 });
 
-// export const { increment, decrement, incrementByAmount } = giphySlice.actions;
+export const { toggleGifLock } = giphySlice.actions;
 
 // Selectors --------------------------------
 export const selectGifs = (state: RootState) => state.giphy.gifs;
