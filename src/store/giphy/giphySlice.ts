@@ -24,6 +24,14 @@ export const giphySlice = createSlice({
         gif.isLocked = !gif.isLocked;
       }
     },
+    addLoadingState: (state) => {
+      if (state.gifsArray) {
+        state.gifsArray = state.gifsArray.map((gif) => {
+          if (gif.isLocked) return gif;
+          return { ...gif, isLoading: true };
+        });
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -71,7 +79,7 @@ export const giphySlice = createSlice({
   },
 });
 
-export const { toggleGifLock } = giphySlice.actions;
+export const { toggleGifLock, addLoadingState } = giphySlice.actions;
 
 // Selectors --------------------------------
 export const selectGifsStates = (state: RootState) => state.giphy.gifsStates;
