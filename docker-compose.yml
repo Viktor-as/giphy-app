@@ -1,0 +1,12 @@
+services:
+  giphy-app:
+    container_name: giphy-app
+    build:
+      context: .
+      args:
+        GIPHY_API_KEY: ${GIPHY_API_KEY}
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    restart: unless-stopped
