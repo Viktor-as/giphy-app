@@ -8,30 +8,18 @@ export const getGifsThunk = createAsyncThunk(
   async (quantity: number, thunkAPI) => {
     try {
       const resp = await axios.get(internalApiEndpoints.getGifs(quantity));
-
-      console.log("Login thunk resp", resp.data);
       const gifs = resp.data as GiphyGif[];
-
       const sortedAndKeyedGifs = [...gifs]
         .sort(
           (a, b) => new Date(b.import_datetime).getTime() - new Date(a.import_datetime).getTime()
         )
-        .map((gif, index) => ({
+        .map((gif) => ({
           ...gif,
-          uniqueKey: `${gif.id}_${index}`,
+          uniqueKey: `${gif.id}_${crypto.randomUUID()}`,
         }));
       return sortedAndKeyedGifs;
-    } catch (error) {
-      console.log("Error form Login thunk", error);
-      //   const message =
-      //       (error.response &&
-      //         error.response.data &&
-      //         error.response.data.message) ||
-      //       error.message ||
-      //       error.toString();
-      //     return thunkAPI.rejectWithValue(message);
-
-      return thunkAPI.rejectWithValue("Could not get gifs :(");
+    } catch {
+      return thunkAPI.rejectWithValue("Could not get the gifs :(");
     }
   }
 );

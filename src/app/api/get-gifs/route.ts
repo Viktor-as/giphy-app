@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
     const gifs = responses.map((res) => res.data.data);
 
     return Response.json(gifs);
-  } catch (error) {
+  } catch {
     return Response.json(
       { error: "Something went wrong, the app might have reached free Giphy limit" },
       { status: 500 }

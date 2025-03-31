@@ -1,5 +1,6 @@
 "use client";
 import RefreshIcon from "@/media/icons/BiRefresh.svg";
+import React from "react";
 
 interface RefreshBtnProps {
   text: string;
@@ -7,7 +8,7 @@ interface RefreshBtnProps {
   onClick: () => void;
 }
 
-export default function RefreshBtn({ text, isLoading, onClick }: RefreshBtnProps) {
+function RefreshBtn({ text, isLoading, onClick }: RefreshBtnProps) {
   return (
     <button
       className={`p-[1.4rem] bg-blueBtnBg center gap-[1.4rem] text-[1.4rem] rounded-[6px] transition-opacity duration-300 ${
@@ -23,3 +24,5 @@ export default function RefreshBtn({ text, isLoading, onClick }: RefreshBtnProps
     </button>
   );
 }
+
+export default React.memo(RefreshBtn);

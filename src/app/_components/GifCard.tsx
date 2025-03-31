@@ -1,17 +1,17 @@
 "use client";
 import { GiphyGif } from "@/store/giphy/giphyTypes";
-import Image from "next/image";
 import { formatDateDashes } from "../_helpers/formatDateDashes";
 import LockIcon from "@/media/icons/MdOutlineLockOpen.svg";
 import LockedLockIcon from "@/media/icons/LockedLock.svg";
 import GifCardSkeleton from "./GifCardSkeleton";
+import React from "react";
 
 interface GifCardProps {
   gifData: GiphyGif;
   handleGifLock: (uniqueKey: string) => void;
 }
 
-export default function GifCard({ gifData, handleGifLock }: GifCardProps) {
+function GifCard({ gifData, handleGifLock }: GifCardProps) {
   if (gifData.isLoading) {
     return <GifCardSkeleton />;
   }
@@ -22,16 +22,15 @@ export default function GifCard({ gifData, handleGifLock }: GifCardProps) {
         onClick={() => handleGifLock(gifData.uniqueKey)}
         className="bg-white w-[23rem] h-[16.5rem] relative rounded-[0.6rem] border-[2px] border-white shadow-[0_2px_4px_rgba(0,0,0,0.1)] cursor-pointer"
       >
-        <Image
-          src={gifData.images.downsized.url ?? null}
-          alt={gifData.alt_text || gifData.title || "Giphy GIF"}
-          className="rounded-[0.6rem]"
-          key={gifData.id}
-          unoptimized
-          priority
-          fill={true}
-          style={{ objectFit: "cover", objectPosition: "center" }}
-        />
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="rounded-[0.6rem] w-full h-full object-cover"
+        >
+          <source src={gifData.images.original_mp4.mp4} type="video/mp4" />
+        </video>
         {gifData.isLocked ? (
           <div className="center w-[2.6rem] h-[2.6rem] bg-black absolute top-[10px] right-[10px] rounded-[0.4rem]">
             <LockedLockIcon className="w-[1.2rem]" />
@@ -49,3 +48,5 @@ export default function GifCard({ gifData, handleGifLock }: GifCardProps) {
     </div>
   );
 }
+
+export default React.memo(GifCard);
