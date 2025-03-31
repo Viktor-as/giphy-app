@@ -1,4 +1,6 @@
-export default function GifCardSkeleton() {
+import React from "react";
+
+function GifCardSkeleton() {
   return (
     <div className="w-[23rem]">
       <div className="w-[23rem] h-[16.5rem] rounded-[0.6rem] animate-pulse bg-gray-200" />
@@ -7,3 +9,5 @@ export default function GifCardSkeleton() {
     </div>
   );
 }
+
+export default React.memo(GifCardSkeleton);

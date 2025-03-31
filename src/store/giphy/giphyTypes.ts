@@ -22,6 +22,12 @@ export interface GiphyGif {
       height: string;
       size: string;
     };
+    original_mp4: {
+      mp4: string;
+      width: string;
+      height: string;
+      mp4_size: string;
+    };
   };
   isLocked?: boolean;
   isLoading?: boolean;
