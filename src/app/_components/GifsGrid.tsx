@@ -51,7 +51,7 @@ export default function GifsGrid() {
   }, [gifsArray, isLoading]);
 
   return (
-    <div className="flex flex-col w-full ">
+    <section className="flex flex-col w-full" aria-label="Random GIFs list">
       <div className="grid [grid-template-columns:repeat(auto-fit,23rem)] justify-center gap-[2.4rem] py-[2.4rem] px-[1.2rem] w-full">
         {!gifsArray || gifsArray.length === 0
           ? Array.from({ length: 12 }).map((_, index) => (
@@ -72,6 +72,6 @@ export default function GifsGrid() {
           onClick={fetchNewGifs}
         />
       </div>
-    </div>
+    </section>
   );
 }
