@@ -45,7 +45,7 @@ export default function GifCard({ gifData, handleGifLock }: GifCardProps) {
       <p className="text-[1.2rem]  pt-[0.2rem] pb-[0.4rem]">
         {formatDateDashes(gifData.import_datetime)}
       </p>
-      <p className="text-[1.6rem] leading-[1.2] font-bold">{gifData.title}</p>
+      <p className="text-[1.6rem] leading-[1.2] font-bold">{gifData.title ?? "No Title"}</p>
     </div>
   );
 }
