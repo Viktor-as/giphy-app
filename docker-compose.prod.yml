@@ -6,7 +6,7 @@ services:
       args:
         GIPHY_API_KEY: ${GIPHY_API_KEY}
     ports:
-      - "3009:3009"
+      - 3009
     env_file:
       - .env
     restart: unless-stopped
