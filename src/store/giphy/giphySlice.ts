@@ -47,10 +47,7 @@ export const giphySlice = createSlice({
 
         // Merge new gifs with existing gifs
         const existingGifs = state.gifsArray || [];
-        const newGifs = action.payload.map((gif, index) => ({
-          ...gif,
-          uniqueKey: `${gif.id}_${index}`,
-        }));
+        const newGifs = action.payload;
 
         // If no existing gifs, set the new gifs as the data
         if (existingGifs.length === 0) {
